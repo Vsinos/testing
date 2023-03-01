@@ -1,0 +1,219 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#define CUSTOMER_NAME_LENGTH 25
+#define ITEM_NAME_LENGTH 40
+
+struct order{
+	int orderNum; 
+	char customerName[CUSTOMER_NAME_LENGTH];
+	char itemName[ITEM_NAME_LENGTH];
+	double itemValue;
+struct order *next;
+};
+
+typedef struct order * nodepointer;
+
+nodepointer get_node(int curOrderNum, char curCustomerName[CUSTOMER_NAME_LENGTH], char curItemName[ITEM_NAME_LENGTH], double curItemValue)  
+  // ΚΩΔΙΚΑΣ ΤΗΣ ΣΥΝΑΡΤΗΣΗΣ ΠΟΥ ΔΗΜΙΟΥΡΓΕΙ ΕΝΑ ΝΕΟ ΚΟΜΒΟ 
+{
+    nodepointer new_node = (nodepointer) malloc(sizeof(struct order));
+    if (new_node == NULL) {
+        printf("Failed to allocate memory for new order node.\n");
+        return NULL;
+    }
+    
+    // set node values
+    new_node->orderNum = curOrderNum;
+    strncpy(new_node->customerName, curCustomerName, CUSTOMER_NAME_LENGTH);
+    strncpy(new_node->itemName, curItemName, ITEM_NAME_LENGTH);
+    new_node->itemValue = curItemValue;
+    new_node->next = NULL;
+    
+    return new_node;
+} 
+
+void createOrderAtTheEnd(nodepointer * head, int orderNumToEnter)
+{ // ΚΩΔΙΚΑΣ ΠΟΥ ΕΙΣΑΓΕΙ ΈΝΑ ΝΕΟ ΚΟΜΒΟ ΣΤΟ ΤΕΛΟΣ ΤΗΣ ΛΙΣΤΑΣ
+        nodepointer newOrder = (nodepointer) malloc(sizeof(struct order));
+    if (newOrder == NULL) {
+        printf("Failed to allocate memory for new order node.\n");
+        return;
+    }
+
+    // get input from the user for the new order
+    printf("Dwse onoma pelati: ");
+    fflush(stdin);
+    fgets(newOrder->customerName, 25, stdin);
+    newOrder->customerName[strcspn(newOrder->customerName, "\n")] = '\0';
+
+    printf("Dwse onoma antikeimenou paraggelias: ");
+    fflush(stdin);
+    fgets(newOrder->itemName, 40, stdin);
+    newOrder->itemName[strcspn(newOrder->itemName, "\n")] = '\0';
+
+    do {
+        printf("Dwse aksia paraggelias: ");
+        scanf("%lf", &newOrder->itemValue);
+    } while (newOrder->itemValue <= 0);
+
+    // assign the order number to the new order
+    newOrder->orderNum = orderNumToEnter;
+
+    // set the next pointer to NULL, since this is now the last node in the list
+    newOrder->next = NULL;
+
+    // if the list is empty, make the new node the head
+    if (*head == NULL) {
+        *head = newOrder;
+        printf("New order added with order number %d.\n", orderNumToEnter);
+        return;
+    }
+
+    // traverse the list to find the last node
+    nodepointer currentNode = *head;
+    while (currentNode->next != NULL) {
+        currentNode = currentNode->next;
+    }
+
+    // insert the new node at the end of the list
+    currentNode->next = newOrder;
+
+    printf("New order added with order number %d.\n", orderNumToEnter);
+}
+
+
+void displayList(nodepointer node)    
+{ // ΕΔΩ ΘΑ ΜΠΕΙ Ο ΚΩΔΙΚΑΣ ΤΗΣ ΣΥΝΑΡΤΗΣΗΣ ΠΟΥ ΔΙΑΠΕΡΝΑ ΤΗ ΛΙΣΤΑ ΚΑΙ ΕΜΦΑΝΙΖΕΙ ΤΟΥΣ ΚΟΜΒΟΥΣ ΤΗΣ 
+	printf("\nOrder List:\n");
+    while(node != NULL) {
+        printf("Order Number: %d\n", node->orderNum);
+        printf("Customer Name: %s\n", node->customerName);
+        printf("Item Name: %s\n", node->itemName);
+        printf("Item Value: $%.2lf\n\n", node->itemValue);
+        node = node->next;
+    }
+}
+
+void printOrderValue(nodepointer node)  
+{ // ΕΔΩ ΘΑ ΜΠΕΙ Ο ΚΩΔΙΚΑΣ ΤΗΣ ΣΥΝΑΡΤΗΣΗΣ ΠΟΥ ΔΙΑΠΕΡΝΑ ΤΗ ΛΙΣΤΑ ΚΑΙ ΕΜΦΑΝΙΖΕΙ ΤΟΝ ΑΡΙΘΜΟ ΤΩΝ ΠΑΡΑΓΓΕΛΙΩΝ ΠΟΥ ΕΚΚΡΕΜΟΥΝ ΚΑΙ ΤΗ ΣΥΝΟΛΙΚΗ ΤΟΥΣ ΑΞΙΑ 
+    double totalValue = 0.0;
+    int numOrders = 0;
+    nodepointer current = head;
+
+    while(current != NULL) {
+        totalValue += current->itemValue;
+        numOrders++;
+        current = current->next;
+    }
+
+    printf("Number of orders pending: %d\n", numOrders);
+    printf("Total value of pending orders: $%.2lf\n", totalValue);
+}
+
+nodepointer serveOrder(nodepointer head, int orderNumToServe)   
+{
+
+// ΔΙΑΒΑΖΕΙ ΕΝΑ ΑΡΙΘΜΟ  ΠΑΡΑΓΓΕΛΙΑΣ 
+// ΕΜΦΑΝΙΖΕΙ ΤΑ ΣΤΟΙΧΕΙΑ ΤΗΣ ΣΤΗΝ ΟΘΟΝΗ ΚΑΙ ΤΗΝ ΑΦΑΙΡΕΙ ΑΠΟ ΤΗ ΛΙΣΤΑ
+	list_count()
+	{
+		order * v = listbase;
+		plithos_stoixeion = 0;
+			while (v!=NULL)
+			{
+				value_sum = value_sum + v->itemValue;
+				v = v->next;
+				plithos_stoixeion++;
+			}
+		printf("Plithos stoixeion: %d.\n",plithos_stoixeion);
+		printf("Aksia paraggeliwn: %lf.\n",value_sum);	
+	}
+}
+
+void serveOrder(nodepointer *head, int orderNumToServe) {
+    nodepointer current = *head;
+    nodepointer previous = NULL;
+    int found = 0;
+
+    while (current != NULL) {
+        if (current->orderNum == orderNumToServe) {
+            found = 1;
+            printf("Order Details:\n");
+            printf("Order Number: %d\n", current->orderNum);
+            printf("Customer Name: %s\n", current->customerName);
+            printf("Item Name: %s\n", current->itemName);
+            printf("Item Value: %.2f\n", current->itemValue);
+
+            if (previous == NULL) {
+                // If the node to be removed is the first node
+                *head = current->next;
+            } else {
+                // If the node to be removed is not the first node
+                previous->next = current->next;
+            }
+
+            free(current);
+            printf("Order %d served and removed from the list.\n", orderNumToServe);
+            break;
+        }
+
+        previous = current;
+        current = current->next;
+    }
+
+    if (!found) {
+        printf("Order %d not found in the list.\n", orderNumToServe);
+    }
+}
+
+int main() {
+	system ("chcp 1253>NULL");
+	struct order *head;
+	int menuValue;
+	int orderNumToEnter=100;
+	int orderNumToServe;
+	head = NULL;
+ 
+ do{ 
+ 	printf("Μενού επιλογών.\n");
+ 	printf("1. Εισαγωγή νέας παραγγελίας\n");
+ 	printf("2. Εμφάνιση παραγγελιών\n");
+ 	printf("3. Εξυπηρέτηση παραγγελίας\n");
+ 	printf("4. Αξία παραγγελιών που εκκρεμούν\n");
+ 	printf("5. Έξοδος\n");
+ 	printf("Εισάγετε επιλογή: "); scanf("%d",&menuValue);
+    switch (menuValue){
+    	case 1: 
+			createOrderAtTheEnd(&head, orderNumToEnter);	
+			orderNumToEnter++;   // ΚΑΘΕ ΝΕΑ ΠΑΡΑΓΓΕΛΙΑ ΕΧΕΙ ΑΡΙΘΜΟ ΑΥΞΗΜΕΝΟ ΚΑΤΑ 1	
+			break;
+    	case 2:
+			if (head!=NULL)
+				displayList(head);
+			else
+				printf("Η λίστα των παραγγελιών είναι άδεια");
+			break;
+    	case 3: 
+    		if (head!=NULL){
+    			printf("Εισάγετε τον αριθμό της παραγγελίας που θέλετε να εξυπηρετηθεί: ");
+    			scanf("%d", &orderNumToServe);
+    			head = serveOrder(head, orderNumToServe);
+    		}
+			else
+				printf("Η λίστα των παραγγελιών είναι άδεια \n");
+			break;
+    	case 4:
+			if (head!=NULL)
+				printOrderValue(head);
+			else
+				printf("Η λίστα των παραγγελιών είναι άδεια \n");
+			break;
+    	case 5:
+			break;
+		default:
+			break;
+	}
+	printf("\n");
+  } while (menuValue!=5);
+}
